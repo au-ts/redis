@@ -147,7 +147,7 @@ ifeq ($(uname_S),Darwin)
   DYLIB_PLUGIN=-Wl,-undefined -Wl,dynamic_lookup
 endif
 
-all: dynamic static hiredis-test pkgconfig
+all: dynamic static hiredis-test pkgconfig $(LIONS_LIBC)/lib/libc.a
 
 dynamic: $(DYLIBNAME) $(SSL_DYLIB)
 

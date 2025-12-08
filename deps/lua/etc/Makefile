@@ -11,7 +11,7 @@ CC= gcc
 CFLAGS= -O2 -Wall -I$(INC) $(MYCFLAGS)
 MYCFLAGS= 
 MYLDFLAGS= -Wl,-E
-MYLIBS= -lm
+MYLIBS=# -lm
 #MYLIBS= -lm -Wl,-E -ldl -lreadline -lhistory -lncurses
 RM= rm -f
 

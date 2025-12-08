@@ -2797,7 +2797,7 @@ void initServer(void) {
     signal(SIGHUP, SIG_IGN);
     signal(SIGPIPE, SIG_IGN);
     setupSignalHandlers();
-    ThreadsManager_init();
+    //ThreadsManager_init();
     makeThreadKillable();
 
     if (server.syslog_enabled) {

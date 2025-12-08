@@ -7,6 +7,12 @@ endif
 
 default: all
 
+export TARGET=aarch64-none-elf
+export CPU=cortex-a57
+export BUILD_DIR=build
+export RANLIB=llvm-ranlib
+export AR=llvm-ar
+
 .DEFAULT:
 	for dir in $(SUBDIRS); do $(MAKE) -C $$dir $@; done
 
