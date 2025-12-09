@@ -101,7 +101,7 @@ fast_float: .make-prerequisites
 
 .PHONY: fast_float
 
-XXHASH_CFLAGS = -fPIC $(DEPS_CFLAGS)
+XXHASH_CFLAGS = -fPIC $(DEPS_CFLAGS) -nostdlib
 xxhash: .make-prerequisites
 	@printf '%b %b\n' $(MAKECOLOR)MAKE$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR)
 	cd xxhash && $(MAKE) lib CFLAGS="$(XXHASH_CFLAGS)" LDFLAGS="$(DEPS_LDFLAGS)"
@@ -127,7 +127,7 @@ endif
 # lua's Makefile defines AR="ar rcu", which is unusual, and makes it more
 # challenging to cross-compile lua (and redis).  These defines make it easier
 # to fit redis into cross-compilation environments, which typically set AR.
-AR=ar
+AR=llvm-ar
 ARFLAGS=rc
 
 lua: .make-prerequisites

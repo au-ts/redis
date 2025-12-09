@@ -140,7 +140,7 @@ $(eval $(call c_program,xxhsum_inlinedXXH,$(CLI_OBJS)))
 # library
 
 libxxhash.a:
-$(eval $(call static_library,libxxhash.a,xxhash.o))
+$(eval $(call static_library,libxxhash.a,xxhash.o, $(LIONS_LIBC)/lib/libc.a))
 
 $(LIBXXH): LDFLAGS += $(SONAME_FLAGS)
 ifeq (,$(filter Windows%,$(OS)))
@@ -159,7 +159,7 @@ libxxhash.$(SHARED_EXT): libxxhash.$(SHARED_EXT_MAJOR)
 libxxhash: $(LIBXXH) libxxhash.$(SHARED_EXT_MAJOR) libxxhash.$(SHARED_EXT)
 
 .PHONY: lib  ## generate static and dynamic xxhash libraries
-lib: libxxhash.a libxxhash
+lib: libxxhash.a #libxxhash XXX: only build static lib, why need the dynamic??
 
 
 # helper targets

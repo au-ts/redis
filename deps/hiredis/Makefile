@@ -47,7 +47,9 @@ OPTIMIZATION?=-O3
 WARNINGS=-Wall -Wextra -Werror -Wstrict-prototypes -Wwrite-strings -Wno-missing-field-initializers
 DEBUG_FLAGS?= -g -ggdb
 REAL_CFLAGS=$(OPTIMIZATION) -fPIC $(CPPFLAGS) $(CFLAGS) $(WARNINGS) $(DEBUG_FLAGS) $(PLATFORM_FLAGS) $(HIREDIS_CFLAGS)
-REAL_LDFLAGS=$(LDFLAGS) $(HIREDIS_LDFLAGS)
+REAL_LDFLAGS=$(LDFLAGS) $(HIREDIS_LDFLAGS) -L$(LIONS_LIBC)/lib/libc.a
+
+
 
 DYLIBSUFFIX=so
 STLIBSUFFIX=a
@@ -147,7 +149,7 @@ ifeq ($(uname_S),Darwin)
   DYLIB_PLUGIN=-Wl,-undefined -Wl,dynamic_lookup
 endif
 
-all: dynamic static hiredis-test pkgconfig $(LIONS_LIBC)/lib/libc.a
+all: dynamic static hiredis-test pkgconfig# $(LIONS_LIBC)/lib/libc.a
 
 dynamic: $(DYLIBNAME) $(SSL_DYLIB)
 

@@ -9,10 +9,11 @@ PLAT= none
 
 CC?= gcc
 CFLAGS= -O2 -Wall $(MYCFLAGS)
-AR= ar rcu
-RANLIB= ranlib
+AR= llvm-ar rcu
+RANLIB= llvm-ranlib
 RM= rm -f
-LIBS= $(MYLIBS) #-lm
+#LIBS= $(MYLIBS) #-lm
+LIBS= $(LIONS_LIBC)/lib/libc.a
 
 MYCFLAGS=
 MYLDFLAGS=
@@ -53,10 +54,10 @@ $(LUA_A): $(CORE_O) $(LIB_O)
 	$(RANLIB) $@
 
 $(LUA_T): $(LUA_O) $(LUA_A)
-	$(CC) -target aarch64-none-elf -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
+	$(CC) -target aarch64-none-elf -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS) -nostdlib
 
 $(LUAC_T): $(LUAC_O) $(LUA_A)
-	$(CC) -target aarch64-none-elf -o $@ $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
+	$(CC) -target aarch64-none-elf -o $@ $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS) -nostdlib -fuse-ld=lld
 
 clean:
 	$(RM) $(ALL_T) $(ALL_O)

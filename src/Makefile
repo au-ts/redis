@@ -35,7 +35,7 @@ endif
 ifneq ($(OPTIMIZATION),-O0)
 	OPTIMIZATION+=-fno-omit-frame-pointer
 endif
-DEPENDENCY_TARGETS=hiredis linenoise lua hdr_histogram fpconv fast_float xxhash
+DEPENDENCY_TARGETS=linenoise hiredis  lua hdr_histogram fpconv xxhash #fast_float 
 NODEPS:=clean distclean
 
 # Default settings
@@ -149,7 +149,7 @@ endif
 
 FINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS)
 FINAL_LDFLAGS=$(LDFLAGS) $(OPT) $(REDIS_LDFLAGS) $(DEBUG)
-FINAL_LIBS=-lm -lstdc++
+FINAL_LIBS= #-lm -lstdc++
 DEBUG=-g -ggdb
 
 # Linux ARM32 needs -latomic at linking time
@@ -177,7 +177,7 @@ ifeq ($(uname_S),SunOS)
 else
 ifeq ($(uname_S),Darwin)
 	# Darwin
-	FINAL_LIBS+= -ldl
+	FINAL_LIBS+= #-ldl
 	# Homebrew's OpenSSL is not linked to /usr/local to avoid
 	# conflicts with the system's LibreSSL installation so it
 	# must be referenced explicitly during build.
@@ -257,7 +257,7 @@ ifdef OPENSSL_PREFIX
 endif
 
 # Include paths to dependencies
-FINAL_CFLAGS+= -I../deps/hiredis -I../deps/linenoise -I../deps/lua/src -I../deps/hdr_histogram -I../deps/fpconv -I../deps/fast_float -I../deps/xxhash
+FINAL_CFLAGS+= -I../deps/hiredis -I../deps/linenoise -I../deps/lua/src -I../deps/hdr_histogram -I../deps/fpconv -I../deps/xxhash #-I../deps/fast_float
 
 # Determine systemd support and/or build preference (defaulting to auto-detection)
 BUILD_WITH_SYSTEMD=no
@@ -397,6 +397,7 @@ SDDF=$(LIONSOS)/dep/sddf
 
 include $(LIONSOS)/lib/libc/libc.mk
 include $(SDDF)/network/lib_sddf_lwip/lib_sddf_lwip.mk
+FINAL_LIBS += $(LIONS_LIBC)/lib/libc.a /Users/szymon/Projects/arm-gnu-toolchain-14.3.rel1-darwin-arm64-aarch64-none-elf/lib/gcc/aarch64-none-elf/14.3.1/libgcc.a
 
 all: $(LIONS_LIBC)/lib/libc.a lib_sddf_lwip.a $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME) $(REDIS_CHECK_RDB_NAME) $(REDIS_CHECK_AOF_NAME) $(TLS_MODULE) module_tests
 	@echo ""
@@ -449,7 +450,8 @@ endif
 
 # redis-server
 $(REDIS_SERVER_NAME): $(REDIS_SERVER_OBJ) $(REDIS_VEC_SETS_OBJ)
-	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a ../deps/hdr_histogram/libhdrhistogram.a ../deps/fpconv/libfpconv.a ../deps/fast_float/libfast_float.a ../deps/xxhash/libxxhash.a $(FINAL_LIBS)
+	$(REDIS_LD) -v -nostdlib -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a ../deps/hdr_histogram/libhdrhistogram.a ../deps/fpconv/libfpconv.a ../deps/xxhash/libxxhash.a $(FINAL_LIBS)
+# ../deps/fast_float/libfast_float.a 
 
 # redis-sentinel
 $(REDIS_SENTINEL_NAME): $(REDIS_SERVER_NAME)

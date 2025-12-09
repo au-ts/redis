@@ -30,7 +30,7 @@
 
 #include "fmacros.h"
 #include "fpconv_dtoa.h"
-#include "fast_float_strtod.h"
+//#include "fast_float_strtod.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -664,7 +664,7 @@ int string2d(const char *s, size_t slen, double *dp) {
     if (unlikely(slen == 0 ||
         isspace(((const char*)s)[0])))
         return 0;
-    *dp = fast_float_strtod(s, &eptr);
+    *dp = strtod(s, &eptr);//fast_float_strtod(s, &eptr);
     /* If `fast_float_strtod` didn't consume full input, try `strtod`
      * Given fast_float does not support hexadecimal strings representation */
     if (unlikely((size_t)(eptr - (char*)s) != slen)) {
